@@ -1,0 +1,32 @@
+USE java;
+
+DELIMITER $$ # 종료문자를 이걸로 하자
+CREATE FUNCTION fn_GET_AGE (
+ -- 파라미터 부분
+	V_BIRTH_DATE CHAR(8)
+) RETURNS INT # 리턴타입
+BEGIN # 중괄호 시작
+	DECLARE V_CURRENT_YEAR CHAR(4); # 변수 선언
+	DECLARE V_BIRTH_YEAR CHAR(4);
+	DECLARE V_AGE INT;
+	
+	SELECT DATE_FORMAT(NOW(), '%Y'), LEFT(V_BIRTH_DATE, 4) # 얘네를
+	INTO V_CURRENT_YEAR, V_BIRTH_YEAR; # 얘네한테 넣어줄꺼야
+	
+	SELECT CAST(V_CURRENT_YEAR AS INT) - CAST(V_BIRTH_YEAR AS INT) + 1
+	INTO V_AGE;
+	
+	RETURN V_AGE;
+END $$ # 중괄호 종료
+DELIMITER ;
+
+-- DATE_FORMAT(날짜정보를, '이런형태로')
+
+-- LEFT(얘를, 왼쪽부터 몇칸만큼) 잘라서 쓴다
+
+-- PL/SQL, T-SQL, SQL
+
+-- 함수 삭제
+DROP FUNCTION if EXISTS fn_GET_AGE;
+
+SELECT fn_GET_AGE('19931025') FROM DUAL; # 오라클에서는 FROM DUAL 넣어줘야해
